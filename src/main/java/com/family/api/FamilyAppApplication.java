@@ -1,4 +1,4 @@
-package com.family.server;
+package com.family.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

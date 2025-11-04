@@ -31,8 +31,8 @@ public class AppUserService {
     private Long refreshTime;
 
     public void joinProcess(){
-        String username = "test";
-        String password = "test";
+        String username = "test1";
+        String password = "test1";
 
         AppUser appUser = AppUser.builder()
                 .username(username)

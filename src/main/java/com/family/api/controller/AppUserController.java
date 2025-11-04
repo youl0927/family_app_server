@@ -6,6 +6,7 @@ import com.family.api.dto.LoginResponse;
 import com.family.api.jwt.JwtUtil;
 import com.family.api.service.AppUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserController {
 
     public final AppUserService appUserService;
-    public final AuthenticationManager authenticationManager;
 
     @PostMapping("/join")
     public ResponseEntity<ApiResponse<String>> joinTest(){
@@ -27,7 +27,7 @@ public class AppUserController {
         ApiResponse<String> result = ApiResponse.<String>builder()
                 .data("OK")
                 .build();
-        return ResponseEntity.ok(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -35,6 +35,7 @@ public class AppUserController {
         ApiResponse<LoginResponse> result = ApiResponse.<LoginResponse>builder()
                 .data(appUserService.login(request))
                 .build();
-        return ResponseEntity.ok(result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 }

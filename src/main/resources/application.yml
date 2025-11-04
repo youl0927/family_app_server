@@ -16,3 +16,5 @@ spring:
     open-in-view: false
   jwt:
     secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
+    access: 600000
+    refresh: 86400000

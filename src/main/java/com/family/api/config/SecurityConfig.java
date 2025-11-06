@@ -30,14 +30,16 @@ public class SecurityConfig {
 //    private final JwtUtil jwtUtil;
     private final JwtFilter jwtFilter;
 
-    @Bean
-    public AuthenticationManager authenticationManager(BCryptPasswordEncoder passwordEncoder){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(customUserDetailsService);   // ✅ 이 메서드
-        provider.setPasswordEncoder(passwordEncoder);
-
-        return new ProviderManager(List.of(provider));
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(BCryptPasswordEncoder passwordEncoder){
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setUserDetailsService(customUserDetailsService);   // ✅ 이 메서드
+//        provider.setPasswordEncoder(passwordEncoder);
+//
+//        provider.setHideUserNotFoundExceptions(false);
+//
+//        return new ProviderManager(List.of(provider));
+//    }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -51,7 +53,7 @@ public class SecurityConfig {
                 .formLogin((auth)-> auth.disable())
                 .httpBasic((auth) -> auth.disable())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/user/join","/user/login").permitAll()
+                        .requestMatchers("/","/user/join","/user/login","/error").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement((session) -> session

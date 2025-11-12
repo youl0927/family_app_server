@@ -1,14 +1,18 @@
 package com.family.api.jwt;
 
 import com.family.api.domain.AppUser;
+import com.family.api.dto.ApiResponse;
 import com.family.api.dto.CustomUserDetails;
 import com.family.api.repository.AppUserRepository;
+import com.family.api.type.JWTEnum;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -60,10 +65,9 @@ public class JwtFilter extends OncePerRequestFilter {
         try{
             jwtUtil.isExpired(accessToken);
         }catch (ExpiredJwtException e){
-            PrintWriter writer = response.getWriter();
-            writer.println("access token expired");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.error("JWT error message = ACCESS_TOKEN_EXPIRED");
+            JWTEnum jwtEnum = JWTEnum.ACCESS_TOKEN_EXPIRED;
+            reponseType(jwtEnum, response);
             return false;
         }
         return true;
@@ -73,14 +77,23 @@ public class JwtFilter extends OncePerRequestFilter {
         String category = jwtUtil.getCategory(accessToken);
 
         if(!category.equals("access")){
-            //response body
-            PrintWriter writer = response.getWriter();
-            writer.println("invalid access token");
+            log.error("JWT error message = INVALID_ACCESS_TOKEN");
+            JWTEnum jwtEnum = JWTEnum.INVALID_ACCESS_TOKEN;
+            reponseType(jwtEnum, response);
 
-            //response tatus code
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
         return true;
+    }
+
+    private void reponseType(JWTEnum jwtEnum, HttpServletResponse response) throws IOException{
+        ObjectMapper objectMapper = new ObjectMapper();
+        ApiResponse apiResponse = ApiResponse.builder()
+                .msg(jwtEnum.getKey())
+                .data(jwtEnum.getValue())
+                .build();
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
     }
 }

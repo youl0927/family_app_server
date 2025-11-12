@@ -1,5 +1,6 @@
 package com.family.api.config;
 
+import com.family.api.jwt.JwtAuthenticationEntryPoint;
 import com.family.api.jwt.JwtFilter;
 import com.family.api.jwt.JwtUtil;
 import com.family.api.service.CustomUserDetailsService;
@@ -24,22 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
-    private final AuthenticationConfiguration authenticationConfiguration;
-    private final CustomUserDetailsService customUserDetailsService; // ✅ 여기 타입 중요 (UserDetailsService)
-//    private final JwtUtil jwtUtil;
     private final JwtFilter jwtFilter;
-
-//    @Bean
-//    public AuthenticationManager authenticationManager(BCryptPasswordEncoder passwordEncoder){
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(customUserDetailsService);   // ✅ 이 메서드
-//        provider.setPasswordEncoder(passwordEncoder);
-//
-//        provider.setHideUserNotFoundExceptions(false);
-//
-//        return new ProviderManager(List.of(provider));
-//    }
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -52,8 +39,10 @@ public class SecurityConfig {
                 .csrf((auth)->auth.disable())
                 .formLogin((auth)-> auth.disable())
                 .httpBasic((auth) -> auth.disable())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/","/user/join","/user/login","/error").permitAll()
+                        .requestMatchers("/user/getUser").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement((session) -> session

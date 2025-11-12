@@ -23,7 +23,6 @@ import java.util.Iterator;
 public class AppUserService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-//    private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
     @Value("${spring.jwt.access}")
@@ -44,21 +43,21 @@ public class AppUserService {
                 .build();
         appUserRepository.save(appUser);
     }
-    
+
     public LoginResponse login(LoginRequest loginRequest) {
 
         // 1. 유저 조회 (없으면 401)
         AppUser user = compareUsernameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
 
-        // 3. 역할(role) 가져오기 (엔티티에 맞게)
+        // 2. 역할(role) 가져오기 (엔티티에 맞게)
         String username = user.getUsername();
         String role = user.getRole(); // 예: "ROLE_USER"
 
-        // 4. JWT 생성
+        // 3. JWT 생성
         String accessToken = jwtUtil.createJwt("access", username, role, accessTime);
         String refreshToken = jwtUtil.createJwt("refresh", username, role, refreshTime);
 
-        // 5. 응답 DTO로 반환
+        // 4. 응답 DTO로 반환
         return LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

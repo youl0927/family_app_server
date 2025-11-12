@@ -1,5 +1,6 @@
 package com.family.api.controller;
 
+import com.family.api.domain.AppUser;
 import com.family.api.dto.ApiResponse;
 import com.family.api.dto.LoginRequest;
 import com.family.api.dto.LoginResponse;
@@ -9,10 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,6 +36,11 @@ public class AppUserController {
                 .data(appUserService.login(request))
                 .build();
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/getUser")
+    public UserDetails getUserTest(@AuthenticationPrincipal UserDetails userDetails){
+        return userDetails;
     }
 
 }

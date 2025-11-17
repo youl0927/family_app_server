@@ -18,3 +18,7 @@ spring:
     secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
     access: 600000
     refresh: 86400000
+
+springdoc:
+  packages-to-scan: com.family.api.controller
+  paths-to-match: /**

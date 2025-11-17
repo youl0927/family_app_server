@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/user/join","/user/login","/error").permitAll()
+                        .requestMatchers("/","/user/join","/user/login","/error","/swagger-ui/**","/v3/**").permitAll()
                         .requestMatchers("/user/getUser").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

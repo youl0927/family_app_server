@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //헤더에서 access토큰 빼옴
-        String accessToken = request.getHeader("access");
+        String accessToken = request.getHeader("Authorization");
 
         //토큰이 없다면 다음 필터로 넘김
         if(accessToken == null){

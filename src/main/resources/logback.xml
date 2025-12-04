@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- 로그 디렉토리 & 파일 이름 -->
+    <property name="LOG_DIR" value="../logs/family_app" />
+    <property name="APP_LOG" value="${LOG_DIR}/app.log" />
+
+    <!-- 공통 로그 패턴 -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] [%thread] %logger{36} - %msg%n" />
+
+    <!-- 콘솔 출력 (원하면 유지, 싫으면 root에서 빼도 됨) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 파일 하나만 사용하는 롤링 파일 appender -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 현재 쓰는 파일 -->
+        <file>${APP_LOG}</file>
+
+        <!-- 날짜별로 파일 분리 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 예: app.log.2025-11-17.gz -->
+            <fileNamePattern>${APP_LOG}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <!-- 60일 보관 -->
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- root 로거 설정 -->
+    <!-- INFO 이상만 찍음 (DEBUG, TRACE는 안 나옴) -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

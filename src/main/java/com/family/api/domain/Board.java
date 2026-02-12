@@ -1,5 +1,6 @@
 package com.family.api.domain;
 
+import com.family.api.dto.BoardAddRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,13 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private AppUser user;
+
+
+    public static Board create(BoardAddRequest boardAddRequest, AppUser appUser){
+        return Board.builder()
+                .title(boardAddRequest.getTitle())
+                .contents(boardAddRequest.getContents())
+                .user(appUser)
+                .build();
+    }
 }

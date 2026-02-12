@@ -1,10 +1,13 @@
 package com.family.api.domain;
 
+import com.family.api.dto.BoardAddRequest;
+import com.family.api.util.LocalFileStorage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Getter

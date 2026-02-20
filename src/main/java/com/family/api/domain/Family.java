@@ -1,5 +1,6 @@
 package com.family.api.domain;
 
+import com.family.api.dto.FamilyAddRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,11 @@ public class Family extends BaseEntity{
     private String familyName;
 
     private String familyCode;
+
+    public static Family add(FamilyAddRequest familyAddRequest){
+        return Family.builder()
+                .familyName(familyAddRequest.getFamilyName())
+                .familyCode(familyAddRequest.getFamilyCode())
+                .build();
+    }
 }

@@ -11,6 +11,7 @@ import com.family.api.repository.BoardRepository;
 import com.family.api.util.LocalFileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class BoardService {
     private final BoardFileRepository boardFileRepository;
 
 
+    @Transactional
     public void create(BoardAddRequest boardAddRequest, List<MultipartFile> files, String username) throws IOException {
         AppUser user = appUserRepository.findByUsername(username).orElseThrow();
         Board board = boardAddRequest.board(boardAddRequest, user);

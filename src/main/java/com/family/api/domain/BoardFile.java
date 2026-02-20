@@ -23,6 +23,7 @@ public class BoardFile extends BaseEntity{
 
     private String storageKey;
 
+    @Column(name = "mime_type", columnDefinition = "mime_enum")
     @Enumerated(EnumType.STRING)
     private MimeType mimeType;
 

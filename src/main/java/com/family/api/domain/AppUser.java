@@ -28,4 +28,8 @@ public class AppUser extends BaseEntity{
     private Family family;
 
     private String role;
+
+    public void add(Family family){
+        this.family = family;
+    }
 }

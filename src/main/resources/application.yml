@@ -16,8 +16,13 @@ spring:
     open-in-view: false
   jwt:
     secret: vmfhaltmskdlstkfkdgodyroqkfwkdbalroqkfwkdbalaaaaaaaaaaaaaaaabbbbb
-    access: 600000
+    access: 60000000
     refresh: 86400000
+  servlet:
+      multipart:
+        max-file-size: 100MB        # 파일 1개당 최대 크기
+        max-request-size: 100MB     # 요청 전체 최대 크기
+        file-size-threshold: 100MB   # 메모리에 유지할 최대 크기
 
 springdoc:
   packages-to-scan: com.family.api.controller

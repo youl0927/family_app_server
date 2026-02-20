@@ -22,7 +22,7 @@ public class FamilyController {
     public ApiResponse<String> add(@AuthenticationPrincipal UserDetails userDetails,
                                    @RequestBody FamilyAddRequest familyAddRequest){
         String username = userDetails.getUsername();
-        familyService.add(familyAddRequest);
+        familyService.add(familyAddRequest, username);
 
         return ApiResponse.<String>builder().data("OK").build();
     }

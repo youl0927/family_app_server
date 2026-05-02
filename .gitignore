@@ -24,4 +24,5 @@ TestResults.xml
 .idea/
 build/
 .gradle
+.gradle-user-home/
 uploads/
